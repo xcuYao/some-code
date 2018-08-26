@@ -34,7 +34,8 @@ class ZhixiaoTable(Base):
 
 
 # 初始化数据库连接
-engine = create_engine('mysql://username:password@localhost:3306/work?charset=utf8mb4', echo=False)
+engine = create_engine(
+    'mysql://work:iwork996@localhost:3306/work?charset=utf8mb4', echo=False)
 
 # 创建DBSession
 DBSession = sessionmaker(bind=engine)
@@ -86,7 +87,7 @@ def saveDB(jsonString):
         app_name=object['name'],
         app_author=object['created_by'],
         app_pv_num=object['visit_amount'],
-        app_tags=object['created_by'],
+        app_tags=classify,
         publish_time=datetime.datetime.fromtimestamp(object['created_at']),
         app_qr_code_addr=object['qrcode']['image'],
         screenshots=screenshots,
@@ -97,17 +98,18 @@ def saveDB(jsonString):
         create_time=datetime.datetime.fromtimestamp(time.time()))
     session.add(zx_obj)
     session.commit()
+
     print("save " + str(object['id']) + " success name:" + object['name'])
 
 
 def main():
     f = open('./error_index.txt', 'a+')
-    for index in range(100, 7839):
+    for index in range(7900, 7905):
         try:
             crawl(index)
-        except:
+        except Exception as e:
             f.write(str(index) + '\n')
-            print('handler error with ' + str(index))
+            print('handler error with ' + str(index) + ' ' + str(e))
         else:
             time.sleep(1)
     print("zhixiao data all over!")
