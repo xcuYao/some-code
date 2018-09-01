@@ -18,6 +18,6 @@ python抓取知晓上的微信小程序信息
 了解了python中对mysql的简单操作  
 
 ### boxue
-使用node的puppeteer库 抓取泊学网的视频
-当然 你需要有一个vip账号
-加深了对node的了解使用
+使用node的puppeteer库 抓取泊学网的视频   
+当然 你需要有一个vip账号  
+加深了对node的了解使用  
