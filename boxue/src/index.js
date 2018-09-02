@@ -16,8 +16,8 @@ log4js.configure({
 
 var { timeout } = require('../tools/tools.js');
 var videos = [];
-const username = "----";
-const password = "----";
+const username = "-----";
+const password = "-----";
 const logger = log4js.getLogger('monkeyCC');
 const saveDir = "/Users/yaoning/Documents/boxue/"
 
@@ -64,7 +64,7 @@ async function visitVedioDetail() {
     await page.setViewport(override);
 
     await loginBoxue(page);
-
+    // 385-395 media error
     for (var i = 0; i < videos.length; i++) {
         let video = videos[i];
         let href = "https://boxueio.com" + video["episode_url"];
@@ -83,8 +83,8 @@ async function visitVedioDetail() {
             return "https://boxueio.com" + href
         });
 
-        let seriesName = video["series_title"].replace(' ', '_');
-        let fileName = video["episode_title"];
+        let seriesName = video["series_title"].replaceAll(' ', '_');
+        let fileName = video["episode_title"].replaceAll('/','_');
         let seriesDir = saveDir + seriesName;
         let vedioSavePath = seriesDir + "/" + fileName + ".mp4";
         let jsonSavePath = seriesDir + "/" + fileName + ".json";
@@ -210,5 +210,10 @@ async function main() {
     await loadAllVideoMetadata();
     await visitVedioDetail();
 }
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 main();
