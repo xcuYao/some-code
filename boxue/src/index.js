@@ -25,6 +25,13 @@ const saveDir = "/Users/yaoning/Documents/boxue/"
  *  获取所有视频元数据
  */
 async function loadAllVideoMetadata() {
+    try {
+        videos = await readJson(saveDir + "/allVedio.json");
+        logger.info("缓存 获取视频元数据成功 总计" + videos.length + "个视频");
+        return
+    } catch (error) {
+        logger.info("缓存获取失败 " + error)
+    }
     let pageCount = 28;
     logger.info("获取视频元数据 总计" + pageCount + "页");
     for (var i = 1; i <= pageCount; i++) {
@@ -39,6 +46,7 @@ async function loadAllVideoMetadata() {
         }
         await timeout(1000);
     }
+    await writeJson(videos, saveDir + "/allVedio.json");
     logger.info("获取视频元数据成功 总计" + videos.length + "个视频");
 }
 
@@ -142,6 +150,23 @@ function writeJson(object, savePath) {
         fs.writeFile(savePath, JSON.stringify(object), function (err) {
             reslove();
         });
+    })
+}
+
+/**
+ *  读JSON
+ *
+ * @param {*} path
+ */
+function readJson(path) {
+    return new Promise((reslove, reject) => {
+        fs.readFile(path, function (err, data) {
+            if (err) {
+                reject()
+            } else {
+                reslove(JSON.parse(data))
+            }
+        })
     })
 }
 
